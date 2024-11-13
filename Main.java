@@ -44,15 +44,30 @@ public class Main {
 
     //Generate report function
     public static String generateReport(ArrayList<Student> students, ArrayList<Staff> staff){
-        String report = "Students: [Total:" + students.size() + "]\n";
+        StringBuilder report = new StringBuilder("Students: [Total:" + students.size() + "]\n");
+        double studentFees = 0, staffPay = 0, studentTermFees = studentFees/2, staffPayPeriod = staffPay/26;
 
-        for (Student student: students){
+        for (Student student : students){
             int count = 1;
-            report += count +". " + student.toString();
+            report.append(count).append(". ").append(student.toString()).append("\n");
+            studentFees += student.getFee();
+            count++;
         }
 
+        report.append("\nStaff: [Total:").append(staff.size()).append("]\n");
 
-        return report;
+        for (Staff staffMember : staff){
+            int count = 1;
+            report.append(count).append(". ").append(staffMember.toString()).append("\n");
+            staffPay += staffMember.getPay();
+            count++;
+        }
+
+        report.append("\n\nResults:\nOutgoing: $").append(staffPayPeriod)
+                .append("\nIncoming: $").append(studentTermFees)
+                .append("\nTotal: $").append(studentTermFees - staffPayPeriod);
+
+        return report.toString();
     }
 
     public static void main(String[] args) {
@@ -106,7 +121,7 @@ public class Main {
             } else {
                 break;
             }
-            report =
+            //Output report
         }
     }
 }
