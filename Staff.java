@@ -1,6 +1,10 @@
+import java.text.DecimalFormat;
+
 public class Staff extends Person{
     private int yearsOfService;
     private double pay;
+
+    DecimalFormat formatter = new DecimalFormat("#0.00");
 
     public Staff(String name, String address, int yearsOfService){
         super(name, address);
@@ -26,6 +30,6 @@ public class Staff extends Person{
 
     @Override
     public String toString() {
-        return "name = " + this.getName() + ", address = " + this.getAddress() + ", year = " + this.getYearsOfService() + ", pay = $" + this.getPay();
+        return "name = " + this.getName() + ", address = " + this.getAddress() + ", year = " + this.getYearsOfService() + ", pay = $" + formatter.format(this.getPay());
     }
 }

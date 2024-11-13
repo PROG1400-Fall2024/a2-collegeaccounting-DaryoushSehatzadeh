@@ -1,6 +1,10 @@
+import java.text.DecimalFormat;
+
 public class Student extends Person{
     private int year;
-    private int fee;
+    private double fee;
+
+    DecimalFormat formatter = new DecimalFormat("#0.00");
 
     public Student(String name, String address, int year) {
         super(name, address);
@@ -20,12 +24,12 @@ public class Student extends Person{
         return this.year;
     }
 
-    public int getFee(){
+    public double getFee(){
         return this.fee;
     }
 
     @Override
     public String toString() {
-        return "name = " + this.getName() + ", address = " + this.getAddress() + ", year = " + this.getYear() + ", fee = $" + this.getFee();
+        return "name = " + this.getName() + ", address = " + this.getAddress() + ", year = " + this.getYear() + ", fee = $" + formatter.format(this.getFee());
     }
 }

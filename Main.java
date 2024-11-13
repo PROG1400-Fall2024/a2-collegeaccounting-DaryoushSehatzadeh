@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -12,32 +13,32 @@ public class Main {
 
     //String input function
     public static String stringInput(String message){
-        String input = "";
-
         while(true){
-            input = JOptionPane.showInputDialog(null, message);
+            String input = JOptionPane.showInputDialog(null, message);
 
-            if (!Objects.equals(input, "")){
-                return input;
-            }
-            //If name is blank, display error
-            warningMessage("Please enter valid information.");
+            if (Objects.equals(input, "")) {//If name is blank, display error
+                warningMessage("Please enter valid information.");
+            } else return input;
         }
     }
 
     //Int input function
-    public static int intInput(String message, int min, int max){
-        int input;
+    public static Integer intInput(String message, int min, int max){
         while(true){
-            try {
-                input = Integer.parseInt(JOptionPane.showInputDialog(null, message));
-                if (input >= min && input <= max){
-                    return input;
+            String userString = JOptionPane.showInputDialog(null, message);
+            if (userString == null) return null;
+            else {
+                try {
+                    int userStringToInt = Integer.parseInt(userString);
+                    if (userStringToInt >= min && userStringToInt <= max) {
+                        return userStringToInt;
+                    }
+                    warningMessage("Please enter valid information.");
                 }
-            }
-            //If not an int, display error
-            catch(Exception e){
-                warningMessage("Please enter valid information.");
+                //If not an int, display error
+                catch (Exception e) {
+                    warningMessage("Please enter valid information.");
+                }
             }
         }
     }
@@ -45,10 +46,11 @@ public class Main {
     //Generate report function
     public static String generateReport(ArrayList<Student> students, ArrayList<Staff> staff){
         StringBuilder report = new StringBuilder("Students: [Total:" + students.size() + "]\n");
-        double studentFees = 0, staffPay = 0, studentTermFees = studentFees/2, staffPayPeriod = staffPay/26;
+        double studentFees = 0, staffPay = 0;
+        DecimalFormat formatter = new DecimalFormat("#0.00");
 
+        int count = 1;
         for (Student student : students){
-            int count = 1;
             report.append(count).append(". ").append(student.toString()).append("\n");
             studentFees += student.getFee();
             count++;
@@ -56,23 +58,24 @@ public class Main {
 
         report.append("\nStaff: [Total:").append(staff.size()).append("]\n");
 
+        count = 1;
         for (Staff staffMember : staff){
-            int count = 1;
+
             report.append(count).append(". ").append(staffMember.toString()).append("\n");
             staffPay += staffMember.getPay();
             count++;
         }
 
-        report.append("\n\nResults:\nOutgoing: $").append(staffPayPeriod)
-                .append("\nIncoming: $").append(studentTermFees)
-                .append("\nTotal: $").append(studentTermFees - staffPayPeriod);
+        double studentTermFees = studentFees/2, staffPayPeriod = staffPay/26;
+        report.append("\n\nResults:\nOutgoing: $").append(formatter.format(staffPayPeriod))
+                .append("\nIncoming: $").append(formatter.format(studentTermFees))
+                .append("\nTotal: $").append(formatter.format((studentTermFees - staffPayPeriod)));
 
         return report.toString();
     }
 
     public static void main(String[] args) {
         //Initialize Variables
-        String report;
         String[] options = {"Student", "Staff", "Finish"};
         ArrayList<Student> students = new ArrayList<Student>();
         ArrayList<Staff> staff = new ArrayList<Staff>();
@@ -82,7 +85,7 @@ public class Main {
             int userChoice;
             String name = "";
             String address = "";
-            int year, yearsOfService;
+            Integer year, yearsOfService;
 
             //Choose Staff or Student
             userChoice = JOptionPane.showOptionDialog(null, "Select Student or Staff.",
@@ -95,8 +98,13 @@ public class Main {
 
                 //Input student info
                 name = stringInput("Enter Student Name");
+                if (name == null) continue;
+
                 address = stringInput("Enter Student Address");
+                if (address == null) continue;
+
                 year = intInput("Enter Student Year (1-4)",1,4);
+                if (year == null) continue;
 
                 //Create Student
                 try {
@@ -109,10 +117,15 @@ public class Main {
 
                 //Input student info
                 name = stringInput("Enter Staff Name");
-                address = stringInput("Enter Staff Address");
-                yearsOfService = intInput("Enter Staff Years of Service (1-29)",1,29);
+                if (name == null) continue;
 
-                //Create Student
+                address = stringInput("Enter Staff Address");
+                if (address == null) continue;
+
+                yearsOfService = intInput("Enter Staff Years of Service (1-29)",1,29);
+                if (yearsOfService == null) continue;
+
+                //Create Staff
                 try {
                     staff.add(new Staff(name,address,yearsOfService));
                 } catch (Exception e) {
@@ -121,7 +134,8 @@ public class Main {
             } else {
                 break;
             }
-            //Output report
         }
+        //Output report
+        JOptionPane.showMessageDialog(null, generateReport(students, staff), "Report", JOptionPane.INFORMATION_MESSAGE);
     }
 }
