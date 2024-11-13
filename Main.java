@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Main {
-    //Helper functions
+
+    //HELPER FUNCTIONS
 
     //Warning message function
     public static void warningMessage(String message){
@@ -80,25 +81,26 @@ public class Main {
         ArrayList<Student> students = new ArrayList<Student>();
         ArrayList<Staff> staff = new ArrayList<Staff>();
 
+        //MAIN PROGRAM LOOP, USER MUST MANUALLY EXIT
         while (true) {
-            //Reset variables
+            //Reset variables on each loop
             int userChoice;
             String name = "";
             String address = "";
             Integer year, yearsOfService;
 
-            //Choose Staff or Student
+            //User chooses Staff or Student
             userChoice = JOptionPane.showOptionDialog(null, "Select Student or Staff.",
                     "Accounting App", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,
                     options, options[0]);
 
 
-            //If student (option[0]) is chosen
+            //If Student option is chosen
             if (userChoice == 0) {
 
                 //Input student info
                 name = stringInput("Enter Student Name");
-                if (name == null) continue;
+                if (name == null) continue; //Cancel current loop and restart if user presses exit or cancel
 
                 address = stringInput("Enter Student Address");
                 if (address == null) continue;
@@ -106,13 +108,15 @@ public class Main {
                 year = intInput("Enter Student Year (1-4)",1,4);
                 if (year == null) continue;
 
-                //Create Student
+                //Create Student & add to Student Arraylist
                 try {
                     students.add(new Student(name,address,year));
 
                 } catch (Exception e) {
                     warningMessage("Could not create Student. Please try again.");
                 }
+
+            //If Staff option is chosen
             } else if (userChoice == 1) {
 
                 //Input student info
@@ -125,12 +129,14 @@ public class Main {
                 yearsOfService = intInput("Enter Staff Years of Service (1-29)",1,29);
                 if (yearsOfService == null) continue;
 
-                //Create Staff
+                //Create Staff & add to Staff Arraylist
                 try {
                     staff.add(new Staff(name,address,yearsOfService));
                 } catch (Exception e) {
                     warningMessage("Could not create Staff. Please try again.");
                 }
+
+            //If user chooses to end the loop
             } else {
                 break;
             }
