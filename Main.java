@@ -53,7 +53,7 @@ public class Main {
         int count = 1;
         for (Student student : students){
             report.append(count).append(". ").append(student.toString()).append("\n");
-            studentFees += student.getFee();
+            studentFees += student.getFeeSemester();
             count++;
         }
 
@@ -63,14 +63,13 @@ public class Main {
         for (Staff staffMember : staff){
 
             report.append(count).append(". ").append(staffMember.toString()).append("\n");
-            staffPay += staffMember.getPay();
+            staffPay += staffMember.getPayPeriod();
             count++;
         }
 
-        double studentTermFees = studentFees/2, staffPayPeriod = staffPay/26;
-        report.append("\n\nResults:\nOutgoing: $").append(formatter.format(staffPayPeriod))
-                .append("\nIncoming: $").append(formatter.format(studentTermFees))
-                .append("\nTotal: $").append(formatter.format((studentTermFees - staffPayPeriod)));
+        report.append("\n\nResults:\nOutgoing: $").append(formatter.format(staffPay))
+                .append("\nIncoming: $").append(formatter.format(studentFees))
+                .append("\nTotal: $").append(formatter.format((studentFees - staffPay)));
 
         return report.toString();
     }

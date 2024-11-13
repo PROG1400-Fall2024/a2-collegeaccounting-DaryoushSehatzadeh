@@ -3,6 +3,7 @@ import java.text.DecimalFormat;
 public class Staff extends Person{
     private int yearsOfService;
     private double pay;
+    private double payPeriod;
 
     DecimalFormat formatter = new DecimalFormat("#0.00");
 
@@ -10,26 +11,15 @@ public class Staff extends Person{
         super(name, address);
         this.yearsOfService = yearsOfService;
         this.pay = 50000 + (500 * yearsOfService);
+        this.payPeriod = this.pay / 26;
     }
 
-    public String getName(){
-        return this.name;
-    }
-
-    public String getAddress(){
-        return this.address;
-    }
-
-    public int getYearsOfService(){
-        return this.yearsOfService;
-    }
-
-    public double getPay(){
-        return this.pay;
+    public double getPayPeriod(){
+        return this.payPeriod;
     }
 
     @Override
     public String toString() {
-        return "name = " + this.getName() + ", address = " + this.getAddress() + ", year = " + this.getYearsOfService() + ", pay = $" + formatter.format(this.getPay());
+        return "name = " + this.getName() + ", address = " + this.getAddress() + ", year = " + this.yearsOfService + ", pay = $" + formatter.format(this.pay);
     }
 }
